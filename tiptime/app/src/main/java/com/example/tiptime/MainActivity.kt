@@ -41,7 +41,8 @@ import com.example.tiptime.ui.theme.TipTimeTheme
 import java.text.NumberFormat
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.mutableStateOf
-
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -87,11 +88,11 @@ fun TipTimeLayout() {
 
 @Composable
 fun EditNumberField(modifier: Modifier = Modifier) {
-    val amountInput = mutableStateOf("0")
+    var amountInput by remember { mutableStateOf("") }
     TextField(
-        value = amountInput.value,
+        value = amountInput,
         onValueChange = {
-            amountInput.value = it
+            amountInput = it
         },
         modifier = modifier
     )
