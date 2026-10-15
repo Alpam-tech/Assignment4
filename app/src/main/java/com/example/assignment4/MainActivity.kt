@@ -8,14 +8,18 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -78,42 +82,95 @@ fun ArtSpaceLayout(modifier: Modifier = Modifier) {
         else -> "2026"
     }
 
-    Column(
+    val onPreviousClick = {
+        currentArtwork = when (currentArtwork) {
+            1 -> 5
+            else -> currentArtwork - 1
+        }
+    }
+    val onNextClick = {
+        currentArtwork = when (currentArtwork) {
+            5 -> 1
+            else -> currentArtwork + 1
+        }
+    }
+
+    BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
             .safeDrawingPadding()
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        contentAlignment = Alignment.Center
     ) {
-        ArtworkWall(
-            imageRes = imageRes,
-            contentDescription = title,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        ArtworkDescriptor(
-            title = title,
-            artist = "Alpamys",
-            year = year,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        DisplayController(
-            onPreviousClick = {
-                currentArtwork = when (currentArtwork) {
-                    1 -> 5
-                    else -> currentArtwork - 1
+        if (maxWidth > maxHeight) {
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(32.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ArtworkWall(
+                        imageRes = imageRes,
+                        contentDescription = title
+                    )
                 }
-            },
-            onNextClick = {
-                currentArtwork = when (currentArtwork) {
-                    5 -> 1
-                    else -> currentArtwork + 1
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    ArtworkDescriptor(
+                        title = title,
+                        artist = "Alpamys",
+                        year = year,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                    DisplayController(
+                        onPreviousClick = onPreviousClick,
+                        onNextClick = onNextClick,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .widthIn(max = 600.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f, fill = false)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    ArtworkWall(
+                        imageRes = imageRes,
+                        contentDescription = title
+                    )
+                }
+                Spacer(modifier = Modifier.height(32.dp))
+                ArtworkDescriptor(
+                    title = title,
+                    artist = "Alpamys",
+                    year = year,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+                DisplayController(
+                    onPreviousClick = onPreviousClick,
+                    onNextClick = onNextClick,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
     }
 }
 
