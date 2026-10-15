@@ -20,6 +20,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,6 +54,30 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ArtSpaceLayout(modifier: Modifier = Modifier) {
+    var currentArtwork by remember { mutableIntStateOf(1) }
+
+    val imageRes = when (currentArtwork) {
+        1 -> R.drawable.artwork_sunset
+        2 -> R.drawable.artwork_grid
+        3 -> R.drawable.artwork_waves
+        4 -> R.drawable.artwork_circles
+        else -> R.drawable.artwork_night
+    }
+    val title = when (currentArtwork) {
+        1 -> "Sunset Hills"
+        2 -> "Primary Grid"
+        3 -> "Ocean Lines"
+        4 -> "Three Suns"
+        else -> "Quiet Night"
+    }
+    val year = when (currentArtwork) {
+        1 -> "2024"
+        2 -> "2025"
+        3 -> "2025"
+        4 -> "2026"
+        else -> "2026"
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -59,15 +87,15 @@ fun ArtSpaceLayout(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center
     ) {
         ArtworkWall(
-            imageRes = R.drawable.artwork_sunset,
-            contentDescription = "Sunset Hills",
+            imageRes = imageRes,
+            contentDescription = title,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(32.dp))
         ArtworkDescriptor(
-            title = "Sunset Hills",
+            title = title,
             artist = "Alpamys",
-            year = "2026",
+            year = year,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(24.dp))
