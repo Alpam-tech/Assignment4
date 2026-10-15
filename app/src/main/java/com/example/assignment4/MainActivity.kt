@@ -100,8 +100,18 @@ fun ArtSpaceLayout(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(24.dp))
         DisplayController(
-            onPreviousClick = {},
-            onNextClick = {},
+            onPreviousClick = {
+                currentArtwork = when (currentArtwork) {
+                    1 -> 5
+                    else -> currentArtwork - 1
+                }
+            },
+            onNextClick = {
+                currentArtwork = when (currentArtwork) {
+                    5 -> 1
+                    else -> currentArtwork + 1
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         )
     }
